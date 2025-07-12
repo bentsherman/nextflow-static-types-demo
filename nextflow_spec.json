@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://raw.githubusercontent.com/nextflow-io/rnaseq-nf/master/nextflow_schema.json",
+  "title": "rnaseq-nf pipeline spec",
+  "description": "Proof of concept of a RNA-seq pipeline implemented with Nextflow",
+  "type": "object",
+  "definitions": {
+    "input_output_options": {
+      "title": "Input/output options",
+      "type": "object",
+      "fa_icon": "fas fa-terminal",
+      "description": "Define where the pipeline should find input data and save output data.",
+      "properties": {
+        "reads": {
+          "type": "string",
+          "description": "The input read-pair files",
+          "fa_icon": "fas fa-folder-open",
+          "default": "${projectDir}/data/ggal/ggal_gut_{1,2}.fq"
+        },
+        "transcriptome": {
+          "type": "string",
+          "description": "The input transcriptome file",
+          "fa_icon": "fas fa-folder-open",
+          "default": "${projectDir}/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa"
+        },
+        "multiqc": {
+          "type": "string",
+          "fa_icon": "fas fa-folder-open",
+          "default": "${projectDir}/multiqc"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/definitions/input_output_options"
+    }
+  ],
+  "outputs": {
+    "samples": {
+      "description": "List of FASTQ samples with optional MD5 checksums",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "fastqc": {
+            "type": "string",
+            "format": "directory-path"
+          },
+          "quant": {
+            "type": "string",
+            "format": "directory-path"
+          }
+        },
+        "required": ["id", "fastq_1"]
+      },
+      "path": "samples.json"
+    },
+    "multiqc_report": {
+      "description": "MultiQC report",
+      "type": "string",
+      "format": "file-path",
+      "path": "multiqc_report.html"
+    },
+    "versions": {
+      "description": "Manifest of tool versions used by the pipeline for MultiQC",
+      "type": "string",
+      "format": "file-path",
+      "path": "versions.yml"
+    }
+  }
+}

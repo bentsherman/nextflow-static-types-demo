@@ -1,0 +1,4 @@
+.lineage
+*.nextflow*
+results
+work
